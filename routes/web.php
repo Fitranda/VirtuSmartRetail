@@ -16,6 +16,8 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\POSController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\ManageAbsensiController;
 use App\Http\Controllers\LaporanPenjualanController;
 
 
@@ -45,14 +47,12 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('forgot-password/change-password', [ForgotPasswordController::class, 'showChangePasswordForm'])->name('ganti-password');
-    Route::post('forgot-password/change-password', [ForgotPasswordController::class, 'changePassword'])->name("ubah-password");
-    Route::resource('akuns', AkunController::class);
-    Route::resource('stokopnames', StokOpnameController::class);
-    Route::resource('produks', ProdukController::class);
-
-    // Add more routes that require authentication here
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('forgot-password/change-password', [ForgotPasswordController::class, 'showChangePasswordForm'])->name('ganti-password');
+Route::post('forgot-password/change-password', [ForgotPasswordController::class, 'changePassword'])->name("ubah-password");
+Route::resource('akuns', AkunController::class);
+Route::resource('stokopnames', StokOpnameController::class);
+Route::resource('produks', ProdukController::class);
 });
 
 Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
@@ -87,6 +87,22 @@ Route::post('/pos', [POSController::class, 'store'])->name('pos.store');
 Route::get('/pos/result/{id}', [POSController::class, 'result'])->name('pos.result');
 Route::get('/pos/struk/{id}', [POSController::class, 'cetakStruk'])->name('pos.struk');
 Route::delete('/pos/{id}', [POSController::class, 'destroy'])->name('pos.destroy');
+
+Route::resource('absensi', AbsensiController::class);
+Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+Route::get('/absensi/create', [AbsensiController::class, 'create'])->name('absensi.create');
+Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
+Route::get('/absensi/{id}/edit', [AbsensiController::class, 'edit'])->name('absensi.edit');
+Route::put('/absensi/{id}', [AbsensiController::class, 'update'])->name('absensi.update');
+Route::delete('/absensi/{id}', [AbsensiController::class, 'destroy'])->name('absensi.destroy');
+
+Route::prefix('manage-absensi')->name('manageAbsensi.')->middleware('auth')->group(function () {
+Route::get('/', [ManageAbsensiController::class, 'index'])->name('index');
+Route::get('edit/{tanggal}', [ManageAbsensiController::class, 'edit'])->name('edit');
+Route::put('update/{tanggal}', [ManageAbsensiController::class, 'update'])->name('update');
+Route::delete('destroy/{tanggal}', [ManageAbsensiController::class, 'destroy'])->name('destroy');
+});
+
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('/laporan', [LaporanPenjualanController::class, 'index'])->name('laporan.index');
