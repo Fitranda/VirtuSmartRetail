@@ -74,7 +74,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Menu SDM</h6>
                             <a class="collapse-item" href="{{ route('karyawan.index') }}">Data Karyawan</a>
-                            <a class="collapse-item" href="cards.html">Manajemen Absensi</a>
+                            <a class="collapse-item" href="{{ route('manageAbsensi.index') }}">Manajemen Absensi</a>
                             <a class="collapse-item" href="{{ route('shift.index') }}">Manajemen Shift</a>
                         </div>
                     </div>
