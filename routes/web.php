@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy'])->name('pelanggan.destroy');
 
     Route::resource('shift', ShiftController::class);
+    Route::resource('shift', ShiftController::class);
 
     Route::get('/shift', [ShiftController::class, 'index'])->name('shift.index');
     Route::get('/shift/create', [ShiftController::class, 'create'])->name('shift.create');

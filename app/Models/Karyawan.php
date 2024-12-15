@@ -44,7 +44,7 @@ public function role()
     // Relasi ke tabel Shift
     public function shift()
     {
-        return $this->belongsTo(Shift::class, 'id_shift');
+        return $this->belongsTo(Shift::class, 'id_shift', 'id');
     }
 
     // Scope untuk karyawan yang aktif

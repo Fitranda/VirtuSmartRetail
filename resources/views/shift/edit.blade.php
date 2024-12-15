@@ -22,7 +22,18 @@
             <input type="time" class="form-control" id="jam_selesai" name="jam_selesai" value="{{ $shift->jam_selesai }}" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Update Shift</button>
+        <select class="form-control" id="karyawan" name="karyawan[]" multiple required>
+            @foreach ($karyawans as $karyawan)
+                <option value="{{ $karyawan->id }}" 
+                    @if($shift->karyawan->contains($karyawan->id)) selected @endif>
+                    {{ $karyawan->nama }}
+                </option>
+            @endforeach
+        </select>        
+            <small class="form-text text-muted">Tekan Ctrl (atau Cmd di Mac) untuk memilih lebih dari satu karyawan.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
     </form>
 </div>
 @endsection

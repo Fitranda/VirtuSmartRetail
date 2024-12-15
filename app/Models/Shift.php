@@ -15,6 +15,7 @@ class Shift extends Model
 // Shift.php
 public function karyawan()
 {
-    return $this->hasMany(Karyawan::class, 'shift_id'); // pastikan kolom relasi 'shift_id' sesuai dengan kolom yang ada di tabel karyawan
+    return $this->hasMany(Karyawan::class, 'id_shift'); // pastikan kolom relasi 'shift_id' sesuai dengan kolom yang ada di tabel karyawan
 }
+
 }
