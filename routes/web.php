@@ -22,6 +22,7 @@ use App\Http\Controllers\LaporanPenjualanController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StokRequestController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\JurnalController;
 
 
 
@@ -128,7 +129,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/barang', [PembelianController::class, 'pilihproduk'])->name('produk');
     Route::post('/savepembelian', [PembelianController::class, 'beli'])->name('savebeli');
 
+    Route::resource('jurnals', JurnalController::class);
+
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
     Route::get('/laporan', [LaporanPenjualanController::class, 'index'])->name('laporan.index');
 });
+
+
+
