@@ -23,14 +23,13 @@ class Jadwal extends Model
     public $timestamps = true;
 
     // Relasi dengan model Karyawan
-    public function karyawan()
-    {
-        return $this->belongsTo(Karyawan::class, 'id_karyawan', 'id_karyawan');
-    }
-
-    // Relasi dengan model Shift
     public function shift()
     {
-        return $this->belongsTo(Shift::class, 'id_shift', 'id_shift');
+        return $this->belongsTo(Shift::class, 'id_shift');
+    }
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'id_karyawan');
     }
 }
