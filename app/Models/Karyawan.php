@@ -47,6 +47,11 @@ public function role()
         return $this->belongsTo(Shift::class, 'id_shift', 'id');
     }
 
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'id_karyawan', 'id_karyawan');
+    }
+
     // Scope untuk karyawan yang aktif
     public function scopeActive($query)
     {
