@@ -12,6 +12,8 @@ class Absensi extends Model
     // Nama tabel yang digunakan oleh model ini
     protected $table = 'absensi';
 
+    protected $primaryKey = 'id_absensi';
+
     // Menentukan kolom mana saja yang dapat diisi secara massal (mass assignment)
     protected $fillable = [
         'id_karyawan',
@@ -27,6 +29,18 @@ class Absensi extends Model
     // Relasi dengan model Karyawan
     public function karyawan()
     {
-        return $this->belongsTo(Karyawan::class, 'id_karyawan', 'id_karyawan');
+        return $this->belongsTo(Karyawan::class, 'id_karyawan');
     }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class, 'id_shift');
+    }
+
+    public function jadwal()
+    {
+        return $this->hasOne(Jadwal::class, 'id_karyawan', 'id_karyawan')
+                    ->whereColumn('tanggal', 'absensi.tanggal');
+    }
+
 }
