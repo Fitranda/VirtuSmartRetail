@@ -124,7 +124,7 @@
                         {{-- <a class="collapse-item" href="utilities-border.html">Hutang</a> --}}
                         <a class="collapse-item" href="{{ route('beli') }}">Pembelian</a>
                         <a class="collapse-item" href="cards.html">Penggajian</a>
-                        <a class="collapse-item" href="utilities-animation.html">Jurnal</a>
+                        <a class="collapse-item" href="{{ route('jurnals.index') }}">Jurnal</a>
                         {{-- <a class="collapse-item" href="utilities-other.html">Laporan Keuangan</a> --}}
                     </div>
                 </li>
