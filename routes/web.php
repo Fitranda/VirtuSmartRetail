@@ -23,6 +23,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StokRequestController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\JurnalController;
+use App\Http\Controllers\PenggajianController;
 
 
 
@@ -130,6 +131,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/savepembelian', [PembelianController::class, 'beli'])->name('savebeli');
 
     Route::resource('jurnals', JurnalController::class);
+    Route::resource('penggajian', PenggajianController::class);
 
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');

@@ -30,12 +30,24 @@ class AbsensiController extends Controller
         $request->validate([
             'id_karyawan' => 'required|exists:karyawan,id_karyawan',
             'tanggal' => 'required|date',
-            'jam_masuk' => 'required|date_format:H:i:s',
-            'jam_keluar' => 'nullable|date_format:H:i:s|after:jam_masuk',
+            'jam_masuk' => 'required',
+            'jam_keluar' => 'nullable|after:jam_masuk',
             'status_hadir' => 'required|in:Hadir,Sakit,Izin,Alpa',
         ]);
 
-        Absensi::create($request->all());
+        $masuk = new \DateTime($request->jam_masuk);
+        $keluar = new \DateTime($request->jam_keluar);
+
+        $jam_masuk = $masuk->format('H:i:s');
+        $jam_keluar = $keluar->format('H:i:s');
+
+        Absensi::create([
+            'id_karyawan' => $request->id_karyawan,
+            'tanggal' => $request->tanggal,
+            'jam_masuk' => $jam_masuk,
+            'jam_keluar' => $jam_keluar,
+            'status_hadir' => $request->status_hadir,
+        ]);
 
         return redirect()->route('absensi.index')->with('success', 'Data absensi berhasil ditambahkan.');
     }

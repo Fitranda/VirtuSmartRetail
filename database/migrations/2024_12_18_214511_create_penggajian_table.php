@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('penggajian', function (Blueprint $table) {
             $table->id('id_penggajian');
-            $table->foreignId('id_karyawan')->constrained('karyawan','id_karyawan');
-            $table->date('gaji_bulan');
-            $table->decimal('potongan', 10, 2);
-            $table->decimal('tunjangan', 10, 2);
-            $table->decimal('total_gaji', 10, 2);
+            $table->foreignId('id_karyawan')->constrained('karyawan', 'id_karyawan');
+            $table->date('tanggal');
+            $table->decimal('gaji_pokok', 15, 2);
+            $table->decimal('tunjangan', 15, 2)->default(0);
+            $table->decimal('potongan', 15, 2)->default(0);
+            $table->decimal('total_gaji', 15, 2);
             $table->timestamps();
         });
     }

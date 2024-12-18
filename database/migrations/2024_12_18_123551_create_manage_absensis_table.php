@@ -11,12 +11,12 @@ class CreateManageAbsensisTable extends Migration
         Schema::create('manage_absensis', function (Blueprint $table) {
             $table->id(); // ID untuk absensi
             $table->foreignId('id_karyawan')->constrained('karyawan', 'id_karyawan')->onDelete('cascade'); // Relasi ke tabel Karyawan
-            $table->foreignId('id_shift')->constrained('shifts')->onDelete('cascade'); // Relasi ke tabel Shift
+            $table->foreignId('id_shift')->constrained('shifts','id_shift')->onDelete('cascade'); // Relasi ke tabel Shift
             $table->date('tanggal'); // Tanggal absensi
             $table->enum('status_hadir', ['Hadir', 'Tidak Hadir']); // Status kehadiran
             $table->timestamps(); // Timestamps (created_at dan updated_at)
         });
-        
+
     }
 
     public function down()

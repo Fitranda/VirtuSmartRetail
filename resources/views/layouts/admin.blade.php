@@ -63,7 +63,7 @@
                 <div id="collapseAdmin" class="collapse" aria-labelledby="headingAdmin" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Admin Options:</h6>
-                        <a class="collapse-item" href="admin-users.html">Absen</a>
+                        <a class="collapse-item" href="{{ route('absensi.index') }}">Absen</a>
                         <a class="collapse-item" href="{{ route('ganti-password') }}">Ganti Password</a>
                     </div>
                 </div>
@@ -120,10 +120,10 @@
                         <h6 class="collapse-header">Keuangan:</h6>
                         <a class="collapse-item" href="{{ route('akuns.index') }}">Akun</a>
                         <a class="collapse-item" href="{{ route('suppliers.index') }}">Supplier</a>
-                        <a class="collapse-item" href="utilities-color.html">Buku Besar</a>
+                        {{-- <a class="collapse-item" href="utilities-color.html">Buku Besar</a> --}}
                         {{-- <a class="collapse-item" href="utilities-border.html">Hutang</a> --}}
                         <a class="collapse-item" href="{{ route('beli') }}">Pembelian</a>
-                        <a class="collapse-item" href="cards.html">Penggajian</a>
+                        <a class="collapse-item" href="{{ route('penggajian.index') }}">Penggajian</a>
                         <a class="collapse-item" href="{{ route('jurnals.index') }}">Jurnal</a>
                         {{-- <a class="collapse-item" href="utilities-other.html">Laporan Keuangan</a> --}}
                     </div>
