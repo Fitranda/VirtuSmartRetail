@@ -8,19 +8,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Virtus Mart Retail</title>
-    {{-- @vite([
+    @vite([
         // 'resources/css/app.css',
         'resources/fontawesome-free/css/all.min.css',
         'resources/css/sb-admin-2.min.css',
-    ]) --}}
-    <link href="{{ asset('assets/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    ])
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
-    <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
-    {{-- {{-- <link rel="stylesheet" href="{{ asset('assets/css/dashlite.css?ver=2.4.0') }}"> --}}
-    {{-- <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/theme.css?ver=2.4.0') }}"> --}}
 </head>
 
 <body id="page-top" style="height: auto;">
@@ -63,8 +58,8 @@
                 <div id="collapseAdmin" class="collapse" aria-labelledby="headingAdmin" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Admin Options:</h6>
-                        <a class="collapse-item" href="admin-users.html">Absen</a>
-                        <a class="collapse-item" href="{{ route('ganti-password') }}">Ganti Password</a>
+                        <a class="collapse-item" href="{{ route('absensi.index') }}">Absen</a>
+                        <a class="collapse-item" href="admin-users.html">Ganti Password</a>
                     </div>
                 </div>
             </li>
@@ -100,9 +95,9 @@
                         <h6 class="collapse-header">Manajemen Inventori:</h6>
                         <a class="collapse-item" href="{{ route('produks.index') }}">Daftar Produk</a>
                         <a class="collapse-item" href="{{ route('stokopnames.create') }}">Stokopname</a>
-                        {{-- <a class="collapse-item" href="utilities-animation.html">Penerimaan Barang</a> --}}
-                        <a class="collapse-item" href="{{ route('stokrequests.index') }}">Restock Produk</a>
-                        {{-- <a class="collapse-item" href="utilities-other.html">Retur Barang</a> --}}
+                        <a class="collapse-item" href="utilities-animation.html">Penerimaan Barang</a>
+                        <a class="collapse-item" href="utilities-animation.html">Purchase Order (PO)</a>
+                        <a class="collapse-item" href="utilities-other.html">Retur Barang</a>
                     </div>
                 </li>
             @endif
@@ -119,13 +114,12 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Keuangan:</h6>
                         <a class="collapse-item" href="{{ route('akuns.index') }}">Akun</a>
-                        <a class="collapse-item" href="{{ route('suppliers.index') }}">Supplier</a>
                         <a class="collapse-item" href="utilities-color.html">Buku Besar</a>
-                        {{-- <a class="collapse-item" href="utilities-border.html">Hutang</a> --}}
-                        <a class="collapse-item" href="{{ route('beli') }}">Pembelian</a>
+                        <a class="collapse-item" href="utilities-border.html">Hutang</a>
+                        <a class="collapse-item" href="utilities-border.html">Pembayaran</a>
                         <a class="collapse-item" href="cards.html">Penggajian</a>
-                        <a class="collapse-item" href="{{ route('jurnals.index') }}">Jurnal</a>
-                        {{-- <a class="collapse-item" href="utilities-other.html">Laporan Keuangan</a> --}}
+                        <a class="collapse-item" href="utilities-animation.html">Jurnal</a>
+                        <a class="collapse-item" href="utilities-other.html">Laporan Keuangan</a>
                     </div>
                 </li>
             @endif
@@ -273,19 +267,29 @@
             @yield('content')
         </div>
     </div>
-    <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
-    {{-- <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> --}}
-    <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('assets/js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('assets/js/demo/chart-pie-demo.js') }}"></script>
-    <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
-    @stack('scripts')
-
-    {{-- <script src="{{ asset('assets/js/bundle.js?ver=2.4.0') }}"></script>
-    <script src="{{ asset('assets/js/scripts.js?ver=2.4.0') }}"></script>
-    <script src="{{ asset('assets/js/charts/gd-analytics.js?ver=2.4.0') }}"></script>
-    <script src="{{ asset('assets/js/libs/jqvmap.js?ver=2.4.0') }}"></script> --}}
+    <!-- Load jQuery from CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Load Bootstrap JS from CDN -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <!-- Load jQuery Easing from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <!-- Load Chart.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Load other JS files -->
+    @vite([
+        'resources/js/sb-admin-2.min.js',
+        // 'resources/js/demo/chart-area-demo.js',
+        // 'resources/js/demo/chart-pie-demo.js',
+        // 'resources/chart.js/chart-pie-demo.js',
+        // 'resources/chart.js/chart-area-demo.js',
+        // 'resources/chart.js/chart-bar-demo.js',
+        // 'resources/chart.js/Chart.bundle.js',
+        // 'resources/chart.js/Chart.bundle.min.js',
+        // 'resources/chart.js/Chart.min.js',
+        // 'resources/chart.js/Chart.js',
+        // 'resources/chart.js/datatables-demo.js',
+        // 'resources/js/app.js'
+    ])
 </body>
 
 </html>
