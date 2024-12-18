@@ -10,25 +10,18 @@ use Faker\Factory as Faker;
 
 class JadwalSeeder extends Seeder
 {
-    /**
-     * Jalankan seeder untuk tabel jadwal.
-     *
-     * @return void
-     */
     public function run()
     {
-        // Mengambil beberapa karyawan dan shift secara acak
-        $karyawans = Karyawan::all();  // Mengambil semua karyawan
-        $shifts = Shift::all();  // Mengambil semua shift
+        $karyawans = Karyawan::all();
+        $shifts = Shift::all();
         $faker = Faker::create();
 
         foreach ($karyawans as $karyawan) {
-            // Membuat 5 jadwal acak untuk setiap karyawan
             foreach (range(1, 5) as $index) {
                 DB::table('jadwal')->insert([
-                    'id_karyawan' => $karyawan->id_karyawan,  // ID karyawan acak
-                    'id_shift' => $shifts->random()->id_shift,  // ID shift acak
-                    'tanggal' => $faker->date(),  // Tanggal acak
+                    'id_karyawan' => $karyawan->id_karyawan,
+                    'id_shift' => $shifts->random()->id_shift,
+                    'tanggal' => $faker->date(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
