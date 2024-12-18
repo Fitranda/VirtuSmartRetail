@@ -2,97 +2,84 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ManageAbsensi;
-use App\Models\Karyawan;
-use App\Models\Shift;
+use App\Models\Jadwal;  // Import Jadwal Model
+use App\Models\Karyawan;  // Import Karyawan Model
+use App\Models\Shift; 
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ManageAbsensiController extends Controller
 {
     public function index(Request $request)
     {
-        $month = $request->input('month', now()->format('Y-m'));
-        $daysInMonth = Carbon::parse($month)->daysInMonth;
+        // Ambil bulan dari request atau gunakan bulan saat ini
+        $month = $request->get('month', now()->format('Y-m'));
 
-        $dates = collect();
-        for ($day = 1; $day <= $daysInMonth; $day++) {
-            $dates->push(Carbon::parse("$month-" . str_pad($day, 2, '0', STR_PAD_LEFT))->format('Y-m-d'));
-        }
+        // Query data absensi sesuai permintaan
+        $absensiRawData = DB::table('absensi as a')
+            ->join('karyawan as k', 'a.id_karyawan', '=', 'k.id_karyawan')
+            ->join('jadwal as j', function ($join) {
+                $join->on('a.tanggal', '=', 'j.tanggal')
+                     ->on('a.id_karyawan', '=', 'j.id_karyawan');
+            })
+            ->leftJoin('shifts as s', 'j.id_shift', '=', 's.id_shift')
+            ->select('a.tanggal', 'k.nama as nama_karyawan', 's.nama_shift', 'a.status_hadir')
+            ->where('a.status_hadir', 'Hadir')
+            ->where('a.tanggal', 'like', "$month%")
+            ->orderBy('a.tanggal', 'asc')
+            ->get();
 
-        $manageAbsensis = ManageAbsensi::with('karyawan', 'shift')
-            ->where('tanggal', 'like', "$month%")
-            ->get()
-            ->groupBy('tanggal');
-
-        $absensiData = $dates->mapWithKeys(function ($date) use ($manageAbsensis) {
-            $shifts = $manageAbsensis->get($date, collect());
-            return [$date => [
-                'pagi' => $shifts->where('id_shift', 1)->pluck('karyawan.nama')->toArray(),
-                'siang' => $shifts->where('id_shift', 2)->pluck('karyawan.nama')->toArray(),
-                'malam' => $shifts->where('id_shift', 3)->pluck('karyawan.nama')->toArray(),
-            ]];
+        // Kelompokkan data berdasarkan tanggal dan shift
+        $absensiData = $absensiRawData->groupBy('tanggal')->map(function ($items) {
+            return [
+                'pagi' => $items->where('nama_shift', 'Pagi')->pluck('nama_karyawan')->toArray(),
+                'sore' => $items->where('nama_shift', 'Sore')->pluck('nama_karyawan')->toArray(),
+                'malam' => $items->where('nama_shift', 'Malam')->pluck('nama_karyawan')->toArray(),
+            ];
         });
 
-        return view('manageAbsensi.index', compact('month', 'absensiData'));
+        return view('manageAbsensi.index', compact('absensiData', 'month'));
     }
 
     public function edit($tanggal)
     {
-        try {
-            $tanggalInput = Carbon::createFromFormat('Y-m-d', $tanggal);
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Format tanggal tidak valid.']);
+        // Mengambil jadwal untuk tanggal tertentu beserta shift dan karyawan yang terdaftar
+        $jadwal = Jadwal::with(['shift', 'karyawan'])
+                        ->where('tanggal', $tanggal)
+                        ->get();
+
+        // Jika tidak ada jadwal untuk tanggal tersebut
+        if ($jadwal->isEmpty()) {
+            return redirect()->route('manageAbsensi.index')
+                ->with('error', 'Data jadwal tidak ditemukan untuk tanggal tersebut.');
         }
 
-        $absensi = ManageAbsensi::where('tanggal', $tanggalInput)->first();
+        // Mengambil data karyawan dan shift untuk dropdown
         $karyawans = Karyawan::all();
         $shifts = Shift::all();
 
-        if (!$absensi) {
-            return redirect()->back()->withErrors(['error' => 'Absensi tidak ditemukan untuk tanggal ini.']);
-        }
-
-        return view('manage_absensi.edit', compact('absensi', 'karyawans', 'shifts'));
+        // Kirim data ke view untuk form edit
+        return view('manageAbsensi.edit', compact('jadwal', 'karyawans', 'shifts', 'tanggal'));
     }
 
     public function update(Request $request, $tanggal)
     {
-        $tanggalInput = Carbon::createFromFormat('Y-m-d', $tanggal);
-
+        // Validasi input
         $request->validate([
-            'id_karyawan' => 'required|exists:karyawans,id',
-            'id_shift' => 'required|exists:shifts,id',
+            'jadwal' => 'required|array',
+            'jadwal.*.id_shift'    => 'required|exists:shifts,id',
         ]);
-
-        $tanggalSekarang = Carbon::now();
-        if ($tanggalInput->gt($tanggalSekarang)) {
-            return redirect()->back()->withErrors(['error' => 'Tidak dapat mengedit absensi di masa depan.']);
+    
+        // Update data jadwal per tanggal
+        foreach ($request->jadwal as $id => $data) {
+            // Cari jadwal berdasarkan ID dan update shift yang dipilih
+            Jadwal::where('id', $id)->update([
+                'id_shift' => $data['id_shift'],
+            ]);
         }
-
-        $absensi = ManageAbsensi::where('tanggal', $tanggalInput)->first();
-        if (!$absensi) {
-            return redirect()->back()->withErrors(['error' => 'Absensi tidak ditemukan untuk tanggal ini.']);
-        }
-
-        $absensi->update([
-            'id_karyawan' => $request->id_karyawan,
-            'id_shift' => $request->id_shift,
-        ]);
-
-        return redirect()->route('manageAbsensi.index')->with('success', 'Absensi berhasil diperbarui.');
+    
+        // Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('manageAbsensi.index')
+            ->with('success', 'Data jadwal berhasil diperbarui.');
     }
-
-    public function destroy($id_karyawan)
-    {
-        $karyawan = Karyawan::find($id_karyawan);
-
-        if (!$karyawan) {
-            return redirect()->back()->withErrors(['error' => 'Karyawan tidak ditemukan.']);
-        }
-
-        ManageAbsensi::where('id_karyawan', $id_karyawan)->delete();
-
-        return redirect()->route('manageAbsensi.index')->with('success', 'Data absensi karyawan berhasil dihapus.');
-    }
-}
+}  
