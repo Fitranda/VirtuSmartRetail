@@ -53,7 +53,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('forgot-password/change-password', [ForgotPasswordController::class, 'showChangePasswordForm'])->name('ganti-password');
+    // Route::get('forgot-password/change-password', [ForgotPasswordController::class, 'showChangePasswordForm'])->name('ganti-password');
     Route::post('forgot-password/change-password', [ForgotPasswordController::class, 'changePassword'])->name("ubah-password");
     Route::resource('akuns', AkunController::class);
     Route::resource('stokopnames', StokOpnameController::class);
@@ -80,8 +80,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/pelanggan/{id}', [PelangganController::class, 'update'])->name('pelanggan.update');
     Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy'])->name('pelanggan.destroy');
 
-    Route::resource('shift', ShiftController::class);
-    Route::resource('shift', ShiftController::class);
+    // Route::resource('shift', ShiftController::class);
+    // Route::resource('shift', ShiftController::class);
 
     Route::get('/shift', [ShiftController::class, 'index'])->name('shift.index');
     Route::get('/shift/create', [ShiftController::class, 'create'])->name('shift.create');
@@ -90,7 +90,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/shift/{id}/update', [ShiftController::class, 'update'])->name('shift.update');
     Route::delete('/shift/{shift}', [ShiftController::class, 'destroy'])->name('shift.destroy');
 
-    Route::resource('pos', PosController::class);
+    // Route::resource('pos', PosController::class);
     Route::get('/pos', [POSController::class, 'index'])->name('pos.index');
     Route::get('/pos/create', [POSController::class, 'create'])->name('pos.create');
     Route::get('/pos/{id}/edit', [POSController::class, 'edit'])->name('pos.edit');
@@ -100,7 +100,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pos/struk/{id}', [POSController::class, 'cetakStruk'])->name('pos.struk');
     Route::delete('/pos/{id}', [POSController::class, 'destroy'])->name('pos.destroy');
 
-    Route::resource('absensi', AbsensiController::class);
+    // Route::resource('absensi', AbsensiController::class);
     Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
     Route::get('/absensi/create', [AbsensiController::class, 'create'])->name('absensi.create');
     Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
