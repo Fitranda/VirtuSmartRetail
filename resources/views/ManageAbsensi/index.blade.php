@@ -10,12 +10,12 @@
     <div class="mb-4">
         <form method="GET" action="{{ route('manageAbsensi.index') }}" class="form-inline">
             <label for="month" class="mr-2">Pilih Bulan dan Tahun:</label>
-            <input 
-                type="month" 
-                id="month" 
-                name="month" 
-                class="form-control mr-2" 
-                value="{{ request('month', now()->format('Y-m')) }}" 
+            <input
+                type="month"
+                id="month"
+                name="month"
+                class="form-control mr-2"
+                value="{{ request('month', now()->format('Y-m')) }}"
                 onchange="this.form.submit()">
         </form>
     </div>
@@ -35,7 +35,7 @@
                             <th>Shift Pagi</th>
                             <th>Shift sore</th>
                             <th>Shift Malam</th>
-                            <th>Aksi</th>
+                            {{-- <th>Aksi</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -73,11 +73,11 @@
                                 </td>
 
                                 <!-- Tombol Aksi -->
-                                <td>
+                                {{-- <td>
                                     <a href="{{ route('manageAbsensi.edit', $tanggal) }}" class="btn btn-sm btn-warning">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
-                                </td>
+                                </td> --}}
                             </tr>
                         @empty
                             <tr>

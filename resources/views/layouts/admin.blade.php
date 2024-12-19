@@ -64,7 +64,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Admin Options:</h6>
                         <a class="collapse-item" href="{{ route('absensi.index') }}">Absen</a>
-                        <a class="collapse-item" href="{{ route('ganti-password') }}">Ganti Password</a>
+                        {{-- <a class="collapse-item" href="{{ route('ganti-password') }}">Ganti Password</a> --}}
                     </div>
                 </div>
             </li>

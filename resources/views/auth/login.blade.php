@@ -11,14 +11,12 @@
 
     <title>ERP - Login</title>
 
-    @vite([
-        // 'resources/css/app.css',
-        'resources/fontawesome-free/css/all.min.css',
-        'resources/css/sb-admin-2.min.css'
-    ])
+   <link href="{{ asset('assets/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+
+    <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
 </head>
 
@@ -87,21 +85,13 @@
         </div>
 
     </div>
-    <!-- Load jQuery from CDN -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Load Bootstrap JS from CDN -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <!-- Load jQuery Easing from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <!-- Load Chart.js from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Load other JS files -->
-    @vite([
-        'resources/js/sb-admin-2.min.js',
-        // 'resources/js/demo/chart-area-demo.js',
-        // 'resources/js/demo/chart-pie-demo.js',
-        // 'resources/js/app.js'
-    ])
+    <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+    {{-- <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> --}}
+    <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('assets/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('assets/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
 
 </body>
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jadwal;  // Import Jadwal Model
 use App\Models\Karyawan;  // Import Karyawan Model
-use App\Models\Shift; 
+use App\Models\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,11 +18,7 @@ class ManageAbsensiController extends Controller
         // Query data absensi sesuai permintaan
         $absensiRawData = DB::table('absensi as a')
             ->join('karyawan as k', 'a.id_karyawan', '=', 'k.id_karyawan')
-            ->join('jadwal as j', function ($join) {
-                $join->on('a.tanggal', '=', 'j.tanggal')
-                     ->on('a.id_karyawan', '=', 'j.id_karyawan');
-            })
-            ->leftJoin('shifts as s', 'j.id_shift', '=', 's.id_shift')
+            ->leftJoin('shifts as s', 'k.id_shift', '=', 's.id_shift')
             ->select('a.tanggal', 'k.nama as nama_karyawan', 's.nama_shift', 'a.status_hadir')
             ->where('a.status_hadir', 'Hadir')
             ->where('a.tanggal', 'like', "$month%")
@@ -69,7 +65,7 @@ class ManageAbsensiController extends Controller
             'jadwal' => 'required|array',
             'jadwal.*.id_shift'    => 'required|exists:shifts,id',
         ]);
-    
+
         // Update data jadwal per tanggal
         foreach ($request->jadwal as $id => $data) {
             // Cari jadwal berdasarkan ID dan update shift yang dipilih
@@ -77,9 +73,9 @@ class ManageAbsensiController extends Controller
                 'id_shift' => $data['id_shift'],
             ]);
         }
-    
+
         // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('manageAbsensi.index')
             ->with('success', 'Data jadwal berhasil diperbarui.');
     }
-}  
+}

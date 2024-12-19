@@ -18,13 +18,13 @@ class POSController extends Controller
         // Menampilkan transaksi yang baru saja dibuat
         $transaksi = TransaksiPenjualan::with('detailPenjualan.produk', 'pelanggan')
                                         ->latest() // Mengurutkan berdasarkan tanggal terbaru
-                                        ->take(10) // Misalnya menampilkan hanya 10 transaksi terbaru
+                                        // ->take(10) // Misalnya menampilkan hanya 10 transaksi terbaru
                                         ->get();
-        
+
         return view('pos.index', compact('transaksi'));
     }
-    
-    
+
+
     /**
      * Tampilkan form tambah transaksi
      */
@@ -34,13 +34,13 @@ class POSController extends Controller
         $produk = Produk::with(['detailPenjualan' => function ($query) {
             $query->select('id_produk', 'harga_satuan');
         }])->get();
-        
+
         // Ambil semua pelanggan
         $pelanggan = Pelanggan::all();
-    
+
         return view('pos.create', compact('produk', 'pelanggan'));
     }
-    
+
 
     /**
      * Simpan transaksi
@@ -69,6 +69,7 @@ class POSController extends Controller
         // Simpan transaksi
         $transaksi = new TransaksiPenjualan();
         $transaksi->id_pelanggan = $request->id_pelanggan; // Jika ada pelanggan
+        $transaksi->tanggal_penjualan = now();
         $transaksi->total_harga = $subtotal; // Hitung total harga
         $transaksi->save();
 

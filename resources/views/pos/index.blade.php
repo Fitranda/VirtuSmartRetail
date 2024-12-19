@@ -39,8 +39,8 @@
                     <tr>
                         <td class="text-center">{{ $index + 1 }}</td>
                         <td>
-                            @if ($trx->tanggal_transaksi)
-                                {{ $trx->tanggal_transaksi->format('Y-m-d H:i:s') }}
+                            @if ($trx->tanggal_penjualan)
+                                {{ \Carbon\Carbon::parse($trx->tanggal_penjualan)->format('Y-m-d H:i:s') }}
                             @else
                                 <span>Tanggal tidak tersedia</span>
                             @endif
@@ -50,9 +50,9 @@
                         <td>Rp {{ number_format($trx->total_harga, 0, ',', '.') }}</td>
                         <td class="text-center">
                             <!-- Tombol Edit -->
-                            <a href="{{ route('pos.edit', $trx->id_penjualan) }}" class="btn btn-warning btn-sm">
+                            {{-- <a href="{{ route('pos.edit', $trx->id_penjualan) }}" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i> Edit
-                            </a>
+                            </a> --}}
 
                             <!-- Tombol Cetak Struk -->
                             <a href="{{ route('pos.struk', $trx->id_penjualan) }}" class="btn btn-info btn-sm"

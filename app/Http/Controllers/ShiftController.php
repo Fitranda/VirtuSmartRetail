@@ -27,21 +27,14 @@ class ShiftController extends Controller
     // Menyimpan data shift baru
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_shift' => 'required|string|max:255',
-            'jam_mulai' => 'required|date_format:H:i',
-            'jam_selesai' => 'required|date_format:H:i',
-            'karyawan' => 'nullable|array', // Karyawan bisa lebih dari satu
-            'karyawan.*' => 'exists:karyawan,id', // Validasi bahwa setiap karyawan ada di tabel karyawan
-        ]);
 
         // Membuat shift baru
         $shift = Shift::create($request->only(['nama_shift', 'jam_mulai', 'jam_selesai']));
 
         // Menambahkan relasi karyawan dengan shift
-        if ($request->filled('karyawan')) {
-            $shift->karyawan()->sync($request->karyawan); // Menyinkronkan karyawan yang dipilih ke shift
-        }
+        // if ($request->filled('karyawan')) {
+        //     $shift->karyawan()->sync($request->karyawan); // Menyinkronkan karyawan yang dipilih ke shift
+        // }
 
         return redirect()->route('shift.index')->with('success', 'Shift berhasil ditambahkan');
     }
@@ -56,21 +49,14 @@ class ShiftController extends Controller
     // Mengupdate data shift
     public function update(Request $request, Shift $shift)
     {
-        $request->validate([
-            'nama_shift' => 'required|string|max:255',
-            'jam_mulai' => 'required|date_format:H:i',
-            'jam_selesai' => 'required|date_format:H:i',
-            'karyawan' => 'nullable|array', // Karyawan bisa lebih dari satu
-            'karyawan.*' => 'exists:karyawan,id', // Validasi bahwa setiap karyawan ada di tabel karyawan
-        ]);
 
         // Mengupdate data shift
         $shift->update($request->only(['nama_shift', 'jam_mulai', 'jam_selesai']));
 
         // Menambahkan atau mengupdate relasi karyawan dengan shift
-        if ($request->filled('karyawan')) {
-            $shift->karyawan()->sync($request->karyawan); // Menyinkronkan karyawan yang dipilih ke shift
-        }
+        // if ($request->filled('karyawan')) {
+        //     $shift->karyawan()->sync($request->karyawan); // Menyinkronkan karyawan yang dipilih ke shift
+        // }
 
         return redirect()->route('shift.index')->with('success', 'Shift berhasil diperbarui');
     }
@@ -79,7 +65,7 @@ class ShiftController extends Controller
     public function destroy(Shift $shift)
     {
         // Hapus relasi shift dari karyawan sebelum menghapus shift
-        $shift->karyawan()->detach(); // Menghapus semua relasi karyawan pada shift ini
+        // $shift->karyawan()->detach(); // Menghapus semua relasi karyawan pada shift ini
         $shift->delete();
 
         return redirect()->route('shift.index')->with('success', 'Shift berhasil dihapus');

@@ -14,14 +14,14 @@ class KaryawanController extends Controller
         $role = Auth::user()->role;
         // Ambil data karyawan
         $karyawan = Karyawan::all();
-        
+
         // Kirim data role dan karyawan ke view
         return view('karyawan.index', compact('role', 'karyawan'));
     }
-    
-    
-    
-    
+
+
+
+
 
     // Menampilkan form tambah karyawan
     public function create()
@@ -29,7 +29,7 @@ class KaryawanController extends Controller
         $role = Auth::user()->role;
         return view('karyawan.create', compact('role')); // Mengirim data role ke view
     }
-    
+
 
     // Menyimpan karyawan baru ke database
     public function store(Request $request)
@@ -51,8 +51,9 @@ class KaryawanController extends Controller
             'username' => $request->username,
             'password' => bcrypt($request->password),
             'email' => $request->email,
-            'id_role' => $request->id_role,
-            'status' => $request->status,
+            'id_role' => 3,
+            'id_shift' => 1,
+            'status' => 1,
         ]);
 
         return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil ditambahkan.');
@@ -68,14 +69,6 @@ class KaryawanController extends Controller
     // Mengupdate data karyawan
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama' => 'required',
-            'posisi' => 'required',
-            'gaji_pokok' => 'required|numeric',
-            'username' => 'required|unique:karyawan,username,' . $id,
-            'email' => 'required|email|unique:karyawan,email,' . $id,
-            'password' => 'nullable|min:6',
-        ]);
 
         $karyawan = Karyawan::findOrFail($id);
         $karyawan->update([
@@ -85,8 +78,9 @@ class KaryawanController extends Controller
             'id_shift' => $request->id_shift,
             'username' => $request->username,
             'email' => $request->email,
-            'id_role' => $request->id_role,
-            'status' => $request->status,
+            'id_role' => 1,
+            'id_shift' => 1,
+            'status' => 1,
             'password' => $request->password ? bcrypt($request->password) : $karyawan->password,
         ]);
 

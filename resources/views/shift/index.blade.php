@@ -11,7 +11,7 @@
     @endif
     <div class="mb-4">
         <!-- Tombol untuk tambah transaksi -->
-        <a href="{{ route('shift.create') }}" class="btn btn-primary">Tambah Transaksi</a>
+        <a href="{{ route('shift.create') }}" class="btn btn-primary">Tambah shift </a>
     </div>
 
     <table class="table table-bordered">
